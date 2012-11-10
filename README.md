@@ -1,6 +1,6 @@
 # WarmingDrawer
 
-Warms caches based on a specified url. For now, only supports Sidekiq.
+Warms caches based on a specified url using an optional background queueing system. For now, only supports Sidekiq or the lack of a queing system, but in the future will support others.
 
 ## Installation
 
