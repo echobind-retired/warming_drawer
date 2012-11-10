@@ -5,12 +5,13 @@ require 'warming_drawer/workers/url_worker'
 
 module WarmingDrawer
 
-  # Warms a cache. Delegates to the proper worker depending on the type: url, proc/method, etc
+  # Warms a cache. Delegates to the proper worker depending on the type.
   #
   # @example
   #   WarmingDrawer.warm('http://sweet.dev/1', 'http://sweet2.dev/2', :type => :url)
   def self.warm(*args)
     options = args.extract_options!
+    options[:type] ||= :url
 
     if worker = available_worker_for_type(options[:type])
       worker.options queue: configuration.queue_name, retry: configuration.retry

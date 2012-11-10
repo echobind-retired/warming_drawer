@@ -2,6 +2,7 @@ module WarmingDrawer
   module Workers
     class UrlWorker < BaseWorker
       require "net/http"
+      require 'sidekiq'
 
       # for now since we assume Sidekiq, just add that in.
       include Sidekiq::Worker
