@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["chris@echobind.com"]
   gem.description   = %q{Adds a generic worker that hits url's to prewarm caches}
   gem.summary       = %q{Adds a generic worker that hits url's to prewarm caches}
-  gem.homepage      = ""
+  gem.homepage      = "http://github.com/echobind/warming_drawer"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

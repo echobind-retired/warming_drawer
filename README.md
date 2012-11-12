@@ -1,4 +1,5 @@
 # WarmingDrawer
+[![Build Status](https://secure.travis-ci.org/echobind/warming_drawer.png?branch=master)](https://travis-ci.org/echobind/warming_drawer) [![Dependency Status](https://gemnasium.com/echobind/warming_drawer.png)](https://gemnasium.com/echobind/warming_drawer) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/echobind/warming_drawer)
 
 Warms caches based on a specified url using an optional background queueing system. For now, only supports Sidekiq or the lack of a queing system, but in the future will support others.
 
