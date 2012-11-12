@@ -7,14 +7,26 @@ describe WarmingDrawer do
 
   describe 'warm' do
 
-    it 'takes any number of items to warm' do
+    before do
       stub_request(:any, 'foo.com').to_return(:body => "good", :status => 200)
       stub_request(:any, 'yep.com').to_return(:body => "good", :status => 200)
+    end
+
+    it 'takes any number of items to warm' do
       lambda {
         WarmingDrawer.warm 'http://foo.com'
         WarmingDrawer.warm 'http://foo.com', 'http://yep.com'
-        WarmingDrawer.warm 'http://foo.com', :something => :else
       }.must_be_silent
+    end
+
+    it 'returns true if the warming request is queued' do
+      warmed = WarmingDrawer.warm 'http://foo.com'
+      warmed.must_equal true
+    end
+
+    it 'returns false if the warming request fails' do
+      warmed = WarmingDrawer.warm 'http://foo.com', :type => :fakeworker
+      warmed.must_equal false
     end
   end
 
