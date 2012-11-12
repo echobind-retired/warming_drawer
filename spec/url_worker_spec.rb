@@ -7,17 +7,19 @@ describe WarmingDrawer::Workers::UrlWorker do
 
   describe 'with Sidekiq as a queuing system' do
     before do
-      WarmingDrawer.configuration.queue_system = :sidekiq
+      WarmingDrawer.configure do |config|
+        config.queue_system = :sidekiq
+      end
     end
 
-    it 'queues up http calls' do
-
-    end
+    it 'queues up http calls'
   end
 
   describe 'without a queuing system' do
     before do
-      WarmingDrawer.configuration.queue_system = :inline
+      WarmingDrawer.configure do |config|
+        config.queue_system = :sidekiq
+      end
     end
 
     it 'makes the http calls directly'
