@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = WarmingDrawer::VERSION
   gem.authors       = ["Chris Ball"]
   gem.email         = ["chris@echobind.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Adds a generic worker that hits url's to prewarm caches}
+  gem.summary       = %q{Adds a generic worker that hits url's to prewarm caches}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
