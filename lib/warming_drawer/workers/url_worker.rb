@@ -1,27 +1,20 @@
 module WarmingDrawer
   module Workers
     class UrlWorker < BaseWorker
-      require "net/http"
+      require 'httpclient'
       require 'sidekiq'
 
       # for now since we assume Sidekiq, just add that in.
       include Sidekiq::Worker
 
-      # params, urls
       def perform(*urls)
-        urls.flatten.each do |url|
-          uri = URI.parse url
-          request = Net::HTTP::Get.new(uri.request_uri)
-          config = WarmingDrawer.configuration
+        config = WarmingDrawer.configuration
+        auth_present = config.basic_auth_username && config.basic_auth_password
 
-          if config.basic_auth_username && config.basic_auth_password
-            request.basic_auth config.basic_auth_username, config.basic_auth_password
-          end
+        http = HTTPClient.new
+        http.set_auth(nil, config.basic_auth_username, config.basic_auth_password)
 
-          Net::HTTP.start(uri.hostname, uri.port) {|http|
-            http.request(request)
-          }
-        end
+        urls.flatten.each { |url| http.get url }
       end
 
     end

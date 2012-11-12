@@ -14,6 +14,7 @@ module WarmingDrawer
     options[:type] ||= :url
 
     if worker = available_worker_for_type(options[:type])
+      # TODO: can this move into worker since its reading config?
       worker.options queue: configuration.queue_name, retry: configuration.retry
       worker.perform_with(args)
     end
@@ -24,8 +25,7 @@ module WarmingDrawer
   end
 
   def self.available_worker_for_type(type)
-    worker_name = Workers.constants.detect {|c| c.downcase.match /^#{type.to_s.downcase}/}
-    if worker_name
+    if worker_name = Workers.constants.detect {|c| c.downcase.match /^#{type.to_s.downcase}/}
       WarmingDrawer::Workers.const_get worker_name.to_s
     end
   end
