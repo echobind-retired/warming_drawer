@@ -22,7 +22,11 @@ module WarmingDrawer
   #   WarmingDrawer.warm('http://sweet.dev/1', 'http://sweet2.dev/2', :type => :url)
   #   => true
   def self.warm(*args)
-    options = args.extract_options!
+    if args.last.is_a?(Hash)
+      options = args.pop
+    else
+      options = {}
+    end
     options[:type] ||= :url
 
     if worker = available_worker_for_type(options[:type])
