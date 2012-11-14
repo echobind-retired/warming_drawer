@@ -1,7 +1,7 @@
 # WarmingDrawer
 [![Build Status](https://secure.travis-ci.org/echobind/warming_drawer.png?branch=master)](https://travis-ci.org/echobind/warming_drawer) [![Dependency Status](https://gemnasium.com/echobind/warming_drawer.png)](https://gemnasium.com/echobind/warming_drawer) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/echobind/warming_drawer)
 
-Warms caches based on a specified url using an optional background queueing system. For now, only supports Sidekiq or the lack of a queing system, but in the future will support others.
+Warms caches based on a specified urls using an optional background queueing system. For now, only supports Sidekiq or the lack of a queueing system, but in the future will support others.
 
 ## Installation
 
@@ -9,17 +9,37 @@ Add this line to your application's Gemfile:
 
     gem 'warming_drawer'
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install warming_drawer
-
 ## Usage
+Configure WarmingDrawer:
 
-TODO: Write usage instructions here
+```ruby
+# config/initializers/warming_drawer.rb
+WarmingDrawer.configure do |config|
+  config.basic_auth_username = ENV['BASIC_AUTH_USER']
+  config.basic_auth_password = ENV['BASIC_AUTH_PASS']
+  config.queue_name          = ENV['MY_QUEUE_NAME']
+  config.queue_system        = :sidekiq
+end
+```
+
+Pass a set of urls that you want to warm the cache for using either arguments or an array:
+
+```ruby
+# using arguments in Rails:
+member_urls = members.map{ |m| member_url m }
+WarmingDrawer.warm *member_urls
+
+# using an array without Rails:
+urls_to_cache = ['http://foo.com', 'http://oof.com']
+WarmingDrawer.warm urls_to_cache
+```
+
+WarmingDrawer will queue a get request to each url in sequence. Note that in Rails, you must have caching turned on for things to go into the queue.
+
+```ruby
+# development.rb
+config.action_controller.perform_caching = true
+```
 
 ## Contributing
 
