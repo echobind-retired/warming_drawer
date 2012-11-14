@@ -15,6 +15,7 @@ module WarmingDrawer
   end
 
   # Warms a cache. Delegates to the proper worker depending on the type.
+  # If being used within Rails, returns false unless action_controller caching is enabled.
   #
   # @param [Array] Arguments or Array to warm
   # @return [Boolean]
@@ -22,6 +23,8 @@ module WarmingDrawer
   #   WarmingDrawer.warm('http://sweet.dev/1', 'http://sweet2.dev/2', :type => :url)
   #   => true
   def self.warm(*args)
+    return false unless cachable?
+
     if args.last.is_a?(Hash)
       options = args.pop
     else
@@ -46,6 +49,14 @@ module WarmingDrawer
 
 
   private
+
+    def self.cachable?
+      (using_rails? && Rails.configuration.action_controller.perform_caching) || !using_rails?
+    end
+
+    def self.using_rails?
+      defined?(::Rails)
+    end
 
     def self.available_worker_for_type(type)
       if worker_name = Workers.constants.detect {|c| c.downcase.match /^#{type.to_s.downcase}/}
