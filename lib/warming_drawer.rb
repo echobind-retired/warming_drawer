@@ -17,7 +17,7 @@ module WarmingDrawer
   # Warms a cache. Delegates to the proper worker depending on the type.
   # If being used within Rails, returns false unless action_controller caching is enabled.
   #
-  # @param [Array] Arguments or Array to warm
+  # @param [Array] args Arguments or Array to warm
   # @return [Boolean]
   # @example
   #   WarmingDrawer.warm('http://sweet.dev/1', 'http://sweet2.dev/2', :type => :url)
